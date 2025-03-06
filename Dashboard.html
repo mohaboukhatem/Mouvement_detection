@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tableau de Bord - Capteur HC-SR04</title>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
+</head>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<canvas id="distanceChart" width="400" height="200"></canvas>
+
+<script>
+    let ctx = document.getElementById('distanceChart').getContext('2d');
+    let distanceChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: 'Distance (cm)',
+                data: [],
+                borderColor: 'blue',
+                fill: false
+            }]
+        }
+    });
+
+    database.ref("mesures").on("value", (snapshot) => {
+        let labels = [];
+        let dataPoints = [];
+
+        snapshot.forEach((childSnapshot) => {
+            let data = childSnapshot.val();
+            labels.push(data.timestamp);
+            dataPoints.push(data.distance);
+        });
+
+        distanceChart.data.labels = labels;
+        distanceChart.data.datasets[0].data = dataPoints;
+        distanceChart.update();
+    });
+</script>
+<body>
+    <h2>📊 Données en Temps Réel</h2>
+    <table border="1">
+        <tr>
+            <th>Horodatage</th>
+            <th>Distance (cm)</th>
+            <th>Statut</th>
+        </tr>
+        <tbody id="data-table"></tbody>
+    </table>
+
+    <script>
+        // Configuration Firebase
+        const firebaseConfig = {
+                apiKey: "AIzaSyBJh1FatYuGHq581ueRMA-kvkl1t6_xgNA",
+                authDomain: "mti840-779c4.firebaseapp.com",
+                databaseURL: "https://mti840-779c4-default-rtdb.firebaseio.com",
+                projectId: "mti840-779c4",
+                storageBucket: "mti840-779c4.firebasestorage.app",
+                messagingSenderId: "520901661043",
+                appId: "1:520901661043:web:0d18f3853eda5cae20b506",
+                measurementId: "G-VZ4XWJK07T"
+        };
+
+        // Initialisation de Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        // Récupérer les données en temps réel
+        database.ref("mesures").on("value", (snapshot) => {
+            let table = document.getElementById("data-table");
+            table.innerHTML = "";  // Réinitialiser la table
+
+            snapshot.forEach((childSnapshot) => {
+                let data = childSnapshot.val();
+                let row = `<tr>
+                    <td>${data.timestamp}</td>
+                    <td>${data.distance} cm</td>
+                    <td>${data.status}</td>
+                </tr>`;
+                table.innerHTML += row;
+            });
+        });
+    </script>
+</body>
+</html>
