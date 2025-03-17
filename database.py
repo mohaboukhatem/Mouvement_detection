@@ -1,4 +1,5 @@
 import pyrebase
+import pytz
 from datetime import datetime
 
 credentiels = {
@@ -18,8 +19,10 @@ def data_storage(distance,status,notifier) :
   storage = firebase.storage()
   database = firebase.database()
   
+  quebec_tz = pytz.timezone('America/Toronto')
+
   print ("storage ... : ",distance)
-  timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+  timestamp = datetime.now(pytz.utc).astimezone(quebec_tz).strftime("%Y-%m-%d %H:%M:%S")
   
   data = {
       "Distance (cm)": distance,
