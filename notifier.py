@@ -21,8 +21,8 @@ def send_sms_message(message):
             body=message, from_="+17404802451", to=receiver
 
         )
-        return "SEND"
+        return "Envoyé"
 
     except :
-        return "NONE" 
+        return "Non Envoyé" 
 # send_sms_message()

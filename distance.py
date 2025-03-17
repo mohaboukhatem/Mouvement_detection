@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from Notifier import send_sms_message
+from notifier import send_sms_message
 from database import data_storage
 
 import RPi.GPIO as GPIO
@@ -39,8 +39,9 @@ def loop():
     i, j= 0, 0
     while True:
         distance = distance_calculator()
-        
+
         if distance > 100:
+            notifier = "Non Envoyé"
             message = f" Aucun objet détecté ({distance} cm)"
             print (message)
             i = 0
@@ -48,13 +49,15 @@ def loop():
         
         
         elif distance > 50 and distance < 100:
-            message = f"Un Objet Detecté moin de 1 mètre ({distance} cm) de votre maison"
+            notifier = "Non Envoyé"
+            message = f"Un Objet Detecté à moin d'un mètre ({distance} cm)"
             print (message)
             i += 1
             j = 0
     
         else :
-            message = f" Un Objet Detecté moin de 50 cm ({distance} cm) de votre maison"
+            notifier = "Non Envoyé"
+            message = f" Un Objet Detecté moin de 50 cm ({distance} cm)"
             print (message)
             i = 0
             j += 1
@@ -62,9 +65,9 @@ def loop():
         if i == 1 or j == 1 :
             notifier = send_sms_message(message)
             print("sms send")
-
-        data_storage(distance,message,notifier = None)
-
+        
+        data_storage(distance,message,notifier)
+            
         time.sleep(1)
         
 

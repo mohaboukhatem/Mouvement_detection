@@ -19,14 +19,14 @@ def data_storage(distance,status,notifier) :
   database = firebase.database()
   
   print ("storage ... : ",distance)
-  timestamp = datetime.now().isoformat()  
-
+  timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+  
   data = {
-      "Distance": distance,
-      "Time": timestamp,
+      "Distance (cm)": distance,
+      "Date": timestamp,
       "Status": status,
-      "SMS Sending": notifier ,
-      "To" : "+14389293674"
+      "Notification SMS": notifier ,
+      "Numéro" : "+14389293674"
 
   }
 
