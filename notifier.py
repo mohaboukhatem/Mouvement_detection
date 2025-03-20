@@ -4,21 +4,24 @@ import smtplib
 import yagmail
 from twilio.rest import Client
 
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
 def send_sms_message(message):
 
 
-    #account_sid = os.environ["TWILIO_ACCOUNT_SID"]
-    account_sid = "ACdf1e75c9c669c2064e92b979246cfc97"
+    account_sid = os.environ["TWILIO_ACCOUNT_SID"]
 
-    #auth_token = os.environ["TWILIO_AUTH_TOKEN"]
-    auth_token = "4f816ef8e7c7f726b284831a6ebc146e"
-    receiver = "+14389293674"
+    auth_token = os.environ["TWILIO_AUTH_TOKEN"]
+        
     client = Client(account_sid, auth_token)
 
     try :
         client.messages.create(
 
-            body=message, from_="+17404802451", to=receiver
+            body=message, from_=os.getenv("PHONE_NUMBER_SENDER") , to = os.getenv("PHONE_NUMBER_RECEIVER") 
 
         )
         return "Envoyé"

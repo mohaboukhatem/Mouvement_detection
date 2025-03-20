@@ -2,15 +2,20 @@ import pyrebase
 import pytz
 from datetime import datetime
 
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
 credentiels = {
-  "apiKey": "AIzaSyBJh1FatYuGHq581ueRMA-kvkl1t6_xgNA",
-  "authDomain": "mti840-779c4.firebaseapp.com",
-  "databaseURL": "https://mti840-779c4-default-rtdb.firebaseio.com",
-  "projectId": "mti840-779c4",
-  "storageBucket": "mti840-779c4.firebasestorage.app",
-  "messagingSenderId": "520901661043",
-  "appId": "1:520901661043:web:0d18f3853eda5cae20b506",
-  "measurementId": "G-VZ4XWJK07T"
+  "apiKey": os.getenv("API_KEY"),
+  "authDomain": os.getenv("AUTH_DOMAIN"),
+  "databaseURL": os.getenv("DATABASE_URL"),
+  "projectId": os.getenv("PROJECT_ID"),
+  "storageBucket": os.getenv("STORAGE_BUCKET"),
+  "messagingSenderId": os.getenv("MESSAGING_SENDER_ID"),
+  "appId": os.getenv("APP_ID"),
+  "measurementId": os.getenv("MEASUREMENT_ID"),
 }
 
 def data_storage(distance,status,notifier) : 
@@ -29,7 +34,7 @@ def data_storage(distance,status,notifier) :
       "Date": timestamp,
       "Status": status,
       "Notification SMS": notifier ,
-      "Numéro" : "+14389293674"
+      "Numéro" : os.getenv("PHONE_NUMBER_RECEIVER") 
 
   }
 
